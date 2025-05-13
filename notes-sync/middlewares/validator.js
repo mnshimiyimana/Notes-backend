@@ -1,9 +1,5 @@
-/**
- * Request validation middleware using Joi
- */
 import Joi from "joi";
 
-// Validation schema for a single note
 const noteSchema = Joi.object({
   title: Joi.string().required().messages({
     "string.empty": "Title cannot be empty",
@@ -25,18 +21,11 @@ const noteSchema = Joi.object({
   }),
 });
 
-// Validation schema for batch notes
 const batchNotesSchema = Joi.array().items(noteSchema).min(1).messages({
   "array.min": "At least one note is required for batch processing",
   "array.base": "Request body must be an array of notes",
 });
 
-/**
- * Middleware for validating a single note
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express next middleware function
- */
 const validateNote = (req, res, next) => {
   const { error } = noteSchema.validate(req.body, { abortEarly: false });
 
@@ -52,12 +41,6 @@ const validateNote = (req, res, next) => {
   next();
 };
 
-/**
- * Middleware for validating batch notes
- * @param {Object} req - Express request object
- * @param {Object} res - Express response object
- * @param {Function} next - Express next middleware function
- */
 const validateBatchNotes = (req, res, next) => {
   const { error } = batchNotesSchema.validate(req.body, { abortEarly: false });
 
